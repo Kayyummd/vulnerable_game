@@ -8,97 +8,144 @@
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     body {
       font-family: 'Press Start 2P', cursive;
-      background: #000;
-      color: #00ffcc;
-      overflow: hidden;
-    }
-    .top-bar {
-      padding: 10px;
-      text-align: center;
       background: #111;
-      border-bottom: 2px solid #00ffcc;
-    }
-    .game-wrapper {
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-    .game-container {
-      flex: 3;
-      background: #111;
-      padding: 20px;
-      margin-right: 10px;
-      border: 2px solid #00ffcc;
-      box-shadow: 0 0 10px #00ffcc;
-    }
-    .chat-box {
-      flex: 1;
-      background: #111;
-      padding: 20px;
-      border: 2px solid #00ffcc;
-      box-shadow: 0 0 10px #00ffcc;
+      background-image:
+        radial-gradient(#ffcc00 1px, transparent 1px),
+        radial-gradient(#ffcc00 1px, transparent 1px);
+      background-position: 0 0, 10px 10px;
+      background-size: 20px 20px;
+      color: #ffcc00;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      animation: pulse 8s infinite ease-in-out;
     }
+
+    @keyframes pulse {
+      0%, 100% { background-color: #111; }
+      50% { background-color: #1c1c1c; }
+    }
+
+    .top-bar {
+      width: 100%;
+      padding: 10px;
+      background-color: #222;
+      color: #ffcc00;
+      text-align: center;
+      font-size: 12px;
+      border-bottom: 2px solid #ffcc00;
+    }
+
+    .game-wrapper {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .game-container {
+      flex: 3;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px;
+      padding: 10px;
+      background-color: #000;
+      box-shadow: 0 0 25px #ffcc00, 0 0 50px #ffcc00;
+      border: 4px double #ffcc00;
+    }
+
+    .chat-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin: 20px 10px 20px 0;
+      padding: 10px;
+      background-color: #000;
+      border: 4px double #ffcc00;
+      max-height: 500px;
+    }
+
     #chat-messages {
       flex: 1;
       overflow-y: auto;
-      margin-bottom: 10px;
       font-size: 10px;
+      margin-bottom: 10px;
     }
+
     #chat-input {
       display: flex;
     }
-    #chat-input input, #chat-input button {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px;
-      padding: 5px;
-      border: 1px solid #00ffcc;
-      background: #000;
-      color: #00ffcc;
-    }
+
     #chat-input input {
       flex: 1;
+      padding: 5px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      background-color: #222;
+      color: #ffcc00;
+      border: 1px solid #ffcc00;
     }
+
     #chat-input button {
+      background-color: #222;
+      color: #ffcc00;
+      border: 1px solid #ffcc00;
+      font-size: 10px;
       cursor: pointer;
+      padding: 5px;
     }
+
     button {
-      background: #000;
-      color: #00ffcc;
-      border: 1px solid #00ffcc;
-      margin: 5px;
-      padding: 10px;
+      background-color: #222;
+      color: #ffcc00;
+      border: 2px solid #ffcc00;
+      padding: 10px 15px;
       font-size: 12px;
+      margin: 5px;
       cursor: pointer;
     }
+
     button:hover {
-      background: #00ffcc;
+      background-color: #ffcc00;
       color: #000;
     }
-    .hidden {
-      display: none;
-    }
+
     #history {
       max-height: 200px;
       overflow-y: auto;
+      margin: 10px 0;
       font-size: 10px;
+      width: 100%;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
     }
   </style>
 </head>
 <body>
-  <div class="top-bar" id="top-usernames">Waiting for players...</div>
+  <div class="top-bar" id="top-usernames">Player 1 vs Player 2</div>
+
   <div class="game-wrapper">
     <div class="game-container" id="game">
-      <h3 id="target-display" style="display:none;">🎯 Target: --</h3>
-      <h2 id="game-status">🕹️ Waiting...</h2>
+      <h3 id="target-display" style="margin:10px; display:none;">🎯 Target: --</h3>
+      <h2 id="game-status">🔹 Get Ready...</h2>
+
       <div id="play-buttons" class="hidden">
         <p>🎯 Choose your number:</p>
         <div>
@@ -110,19 +157,26 @@
           <button onclick="playNum(5)">5</button>
         </div>
       </div>
-      <h3>📜 Scoreboard</h3>
-      <ul id="history"></ul>
-      <button id="reset-btn" class="hidden" onclick="restartGame()">⟲ Reset</button>
+
+      <div>
+        <h3>📜 Scoreboard</h3>
+        <ul id="history" style="list-style:none; padding-left:0;"></ul>
+      </div>
+
+      <button id="reset-btn" class="hidden">⟲ Reset</button>
+      <div class="confetti" id="confetti"></div>
     </div>
+
     <div class="chat-box">
       <h3>💬 Chat</h3>
       <div id="chat-messages"></div>
       <div id="chat-input">
-        <input type="text" id="chatText" placeholder="Type your message...">
+        <input type="text" id="chatText" placeholder="Type your message..." />
         <button onclick="sendMessage()">Send</button>
       </div>
     </div>
   </div>
+
   <script>
     const socket = io();
     const params = new URLSearchParams(window.location.search);
@@ -130,7 +184,7 @@
     const username = params.get('username') || 'Player';
     const isHost = params.get('host') === 'true';
 
-    let sid = '', innings = 1;
+    let sid = "", innings = 1;
     let myScore = 0, opponentScore = 0;
     let isMyTurnToBat = false, target = null, gameEnded = false;
     let usernames = {};
@@ -140,29 +194,17 @@
     const playButtons = document.getElementById("play-buttons");
     const historyList = document.getElementById("history");
     const resetBtn = document.getElementById("reset-btn");
+    const confettiEl = document.getElementById("confetti");
+    const chatMessages = document.getElementById("chat-messages");
 
     socket.on('connect', () => {
       sid = socket.id;
       socket.emit('join_room', { room, host: isHost, username });
     });
 
-    socket.on("both_ready", () => {
-      if (isHost) {
-        const choice = confirm("Choose HEAD for toss? Click Cancel for TAIL");
-        socket.emit("toss_choice", { room, choice: choice ? "Head" : "Tail" });
-      }
-    });
-
-    socket.on("toss_result", data => {
-      const youWon = (data.winner === 'host') === isHost;
-      const choice = youWon ? confirm("You won the toss! Bat? OK = Bat, Cancel = Bowl") : null;
-      if (youWon) {
-        socket.emit("bat_bowl_choice", { room, choice: choice ? "Bat" : "Bowl" });
-      }
-    });
-
     socket.on("game_start", data => {
       usernames = data.usernames;
+      document.getElementById("game").style.display = "flex";
       isMyTurnToBat = data.bat_first_sid === sid;
       innings = 1;
       myScore = 0;
@@ -171,8 +213,12 @@
       gameEnded = false;
       historyList.innerHTML = "";
       resetBtn.classList.add("hidden");
+
       const opponentId = Object.keys(usernames).find(id => id !== sid);
-      document.getElementById("top-usernames").innerText = `${usernames[sid]} vs ${usernames[opponentId]}`;
+      const myName = usernames[sid] || 'You';
+      const oppName = usernames[opponentId] || 'Opponent';
+      document.getElementById("top-usernames").innerText = `${myName} vs ${oppName}`;
+
       updateGameStatus();
       playButtons.classList.remove("hidden");
     });
@@ -184,7 +230,9 @@
       } else {
         targetDisplay.style.display = "block";
         targetDisplay.innerText = `🎯 Target: ${target}`;
-        gameStatus.innerText = isMyTurnToBat ? `🏏 Batting – Target: ${target}` : `🥎 Bowling – Defend ${target}`;
+        gameStatus.innerText = isMyTurnToBat
+          ? `🏏 Batting – Target: ${target}`
+          : `🥎 Bowling – Defend ${target}`;
       }
     }
 
@@ -199,11 +247,10 @@
       const myMove = data.moves[sid];
       const opponentSid = Object.keys(data.moves).find(id => id !== sid);
       const opponentMove = data.moves[opponentSid];
-      const myName = usernames[sid];
-      const oppName = usernames[opponentSid];
+      const myName = usernames[sid] || 'You';
+      const oppName = usernames[opponentSid] || 'Opponent';
 
-      const same = myMove === opponentMove;
-      if (same) {
+      if (data.type === "out") {
         showHistory(`💥 OUT! ${myName} & ${oppName} both played ${myMove}`);
         if (innings === 1) {
           target = isMyTurnToBat ? myScore + 1 : opponentScore + 1;
@@ -216,6 +263,7 @@
         }
         return;
       }
+
       showHistory(`${myName}: ${myMove} | ${oppName}: ${opponentMove}`);
       if (isMyTurnToBat) {
         myScore += myMove;
@@ -224,12 +272,14 @@
         opponentScore += opponentMove;
         if (innings === 2 && opponentScore >= target) return endGame(false);
       }
+
       playButtons.classList.remove("hidden");
       updateGameStatus();
     });
 
     socket.on("game_over", data => {
-      endGame(data.winner_sid === sid);
+      const youWon = data.winner_sid === sid;
+      endGame(youWon);
     });
 
     function endGame(won) {
@@ -245,7 +295,7 @@
       const end = Date.now() + duration;
       const interval = setInterval(() => {
         if (Date.now() > end) return clearInterval(interval);
-        confetti({ particleCount: 25, spread: 360, origin: { x: Math.random(), y: Math.random() } });
+        confetti({ particleCount: 50, spread: 360, origin: { x: Math.random(), y: Math.random() } });
       }, 200);
     }
 
@@ -253,10 +303,6 @@
       const li = document.createElement("li");
       li.textContent = text;
       historyList.appendChild(li);
-    }
-
-    function restartGame() {
-      socket.emit("restart_game", { room });
     }
 
     function sendMessage() {
@@ -270,10 +316,13 @@
     socket.on("receive_message", data => {
       const p = document.createElement("p");
       p.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
-      const chatMessages = document.getElementById("chat-messages");
       chatMessages.appendChild(p);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     });
+
+    resetBtn.onclick = () => {
+      socket.emit("restart_game", { room });
+    };
   </script>
 </body>
 </html>
