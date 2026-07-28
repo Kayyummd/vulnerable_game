@@ -1,30 +1,13 @@
-🎮 Vulnerable Multiplayer Hand Cricket Game
+# 🎮 Vulnerable Multiplayer Hand Cricket Game
 
-A deliberately vulnerable **real-time multiplayer web application** developed using **Python**, **Flask**, **Flask-SocketIO**, **SQLAlchemy**, 
-**SQLite**, **HTML**, **CSS**, and **JavaScript** to provide a practical environment for **Web Application Security**, **Penetration Testing**, 
-and **Secure Coding**.
-The project combines multiplayer game development with intentionally insecure implementations to help learners understand how common vulnerabilities are
-introduced, exploited, and mitigated in modern web applications.
+A deliberately vulnerable **real-time multiplayer web application** developed using **Python**, **Flask**, **Flask-SocketIO**, **SQLAlchemy**, **SQLite**, **HTML**, **CSS**, and **JavaScript** to provide a practical environment for **Web Application Security**, **Penetration Testing**, and **Secure Coding**. The project combines multiplayer game development with intentionally insecure implementations to help learners understand how common vulnerabilities are introduced, exploited, and mitigated in modern web applications.
 
-The application implements a complete **client-server architecture** with **WebSocket-based real-time communication**, allowing multiple users to register, 
-authenticate, create game rooms, join multiplayer matches, exchange live messages, and synchronize gameplay with minimal latency. User credentials are securely 
-stored using **Werkzeug password hashing**, while game data is managed through **SQLAlchemy ORM** and **SQLite**.
+The application implements a complete **client-server architecture** with **WebSocket-based real-time communication**, allowing multiple users to register, authenticate, create game rooms, join multiplayer matches, exchange live messages, and synchronize gameplay with minimal latency. User credentials are securely stored using **Werkzeug password hashing**, while game data is managed through **SQLAlchemy ORM** and **SQLite**.
 
-Unlike a conventional web application, this project intentionally includes multiple **OWASP Top 10** vulnerabilities to simulate realistic attack scenarios. 
-It enables cybersecurity students, ethical hackers, penetration testers, and bug bounty enthusiasts to perform **vulnerability assessment**, 
-**web application penetration testing**, **security analysis**, and **exploit development** in a safe and controlled environment. 
-The implemented vulnerabilities demonstrate real-world security issues such as **Insecure Direct Object Reference (IDOR)**, **Broken Access Control**, 
-**Privilege Escalation**, **Session Hijacking**, **Authentication and Authorization flaws**, **Business Logic Vulnerabilities**, **Insecure Session Management**, 
-and **Input Validation Weaknesses**.
+Unlike a conventional web application, this project intentionally includes multiple **OWASP Top 10** vulnerabilities to simulate realistic attack scenarios. It enables cybersecurity students, ethical hackers, penetration testers, and bug bounty enthusiasts to perform **vulnerability assessment**, **web application penetration testing**, **security analysis**, and **exploit development** in a safe and controlled environment. The implemented vulnerabilities demonstrate real-world security issues such as **Insecure Direct Object Reference (IDOR)**, **Broken Access Control**, **Privilege Escalation**, **Session Hijacking**, **Authentication and Authorization flaws**, **Business Logic Vulnerabilities**, **Insecure Session Management**, and **Input Validation Weaknesses**.
 
-The project follows a modular architecture consisting of authentication, multiplayer game management, session handling, room management, real-time chat, 
-scoreboard synchronization, and an administrative dashboard. It showcases concepts including **RESTful web development**, **state management**, 
-**real-time networking**, **database design**, **client-server communication**, and **secure authentication workflows**, while also highlighting the security 
-risks that arise from improper implementation.
+The project follows a modular architecture consisting of authentication, multiplayer game management, session handling, room management, real-time chat, scoreboard synchronization, and an administrative dashboard. It showcases concepts including **RESTful web development**, **state management**, **real-time networking**, **database design**, **client-server communication**, and **secure authentication workflows**, while also highlighting the security risks that arise from improper implementation.
 
-This repository is intended for **cybersecurity education**, **ethical hacking training**, **Capture The Flag (CTF) practice**, **OWASP Top 10 learning**,
-**secure software development**, **bug bounty preparation**, **academic research**, and **hands-on web security laboratories**. 
-It provides an end-to-end example of building, analyzing, exploiting, and ultimately understanding the security posture of a modern web application.
+This repository is intended for **cybersecurity education**, **ethical hacking training**, **Capture The Flag (CTF) practice**, **OWASP Top 10 learning**, **secure software development**, **bug bounty preparation**, **academic research**, and **hands-on web security laboratories**. It provides an end-to-end example of building, analyzing, exploiting, and ultimately understanding the security posture of a modern web application.
 
-> **⚠️ Disclaimer:** This project is intentionally vulnerable and is designed solely for educational, research, and authorized security testing purposes.
-It must not be deployed in production environments or exposed to public networks.
+> **⚠️ Disclaimer:** This project is intentionally vulnerable and is designed solely for educational, research, and authorized security testing purposes. It must not be deployed in production environments or exposed to public networks.
